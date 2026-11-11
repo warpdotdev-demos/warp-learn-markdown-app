@@ -1,12 +1,13 @@
-# Marky
+# Marky - as seen on warp.dev/learn
 
-**A notepad for you and your agents.** A local-first desktop app backed by plain Markdown and HTML files.
+This is the sample project used by the Warp Factories introductory course. Learn more at [warp.dev/learn](warp.dev/learn)
 
 ## What is Marky?
 
+Marky is a local-first desktop app backed by plain Markdown and HTML files.
+
 - **Feels familiar.** A writing experience like Notion or Apple Notes, but for Markdown. `/` commands, Markdown shortcuts, and file properties / frontmatter are supported.
 - **Agent ready.** Point your agent at your notes folder to start collaborating. Marky live-reloads as your agent edits.
-- **Build any view.** Beyond Markdown, you can build and view HTML-based apps. Ask your coding agent to turn a folder of notes into a table, a bookshelf, a map, or anything else you can think of.
 
 ## Getting started
 
