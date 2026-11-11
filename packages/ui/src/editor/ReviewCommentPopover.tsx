@@ -707,7 +707,7 @@ export function ReviewCommentPopover({
 												: "human",
 										)}
 									</div>
-									<blockquote className="line-clamp-2 border-s-2 border-brand-accent ps-2 text-xs leading-snug text-muted-foreground">
+									<blockquote className="line-clamp-2 border-s-2 border-comment-highlight ps-2 text-xs leading-snug text-muted-foreground">
 										{editor.state.doc.textBetween(
 											activeComment.from,
 											activeComment.to,

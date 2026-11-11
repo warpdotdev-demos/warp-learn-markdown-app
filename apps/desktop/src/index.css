@@ -39,27 +39,29 @@
 
 .dark {
 	color-scheme: dark;
-	--background: oklch(0.2 0.004 60);
-	--foreground: oklch(0.945 0.002 60);
-	--card: oklch(0.24 0.005 60);
+	--background: oklch(0.2 0.0025 211);
+	--foreground: oklch(0.945 0.0015 211);
+	--card: oklch(0.24 0.003 211);
 	--card-foreground: var(--foreground);
-	--popover: oklch(0.24 0.005 60);
+	--popover: oklch(0.24 0.003 211);
 	--popover-foreground: var(--foreground);
-	--primary: oklch(0.47 0.08 159.6);
+	/* #1008ff lifted so link text and the cursor stay legible on dark */
+	--primary: oklch(0.55 0.26 265);
 	--primary-foreground: oklch(0.985 0 0);
-	--secondary: oklch(0.285 0.005 60);
+	--brand-accent: oklch(0.62 0.22 265);
+	--secondary: oklch(0.285 0.003 211);
 	--secondary-foreground: var(--foreground);
-	--muted: oklch(0.275 0.005 60);
-	--muted-foreground: oklch(0.72 0.006 60);
-	--accent: oklch(0.32 0.04 88);
+	--muted: oklch(0.275 0.003 211);
+	--muted-foreground: oklch(0.72 0.003 211);
+	--accent: oklch(0.32 0.004 211);
 	--accent-foreground: var(--foreground);
-	--selected: oklch(0.73 0.125 88);
-	--selected-foreground: oklch(0.24 0.03 85);
+	--selected: oklch(0.42 0.005 211);
+	--selected-foreground: oklch(0.985 0 0);
 	--destructive: oklch(0.704 0.191 22.216);
 	--destructive-foreground: oklch(0.985 0 0);
 	--border: oklch(1 0 0 / 10%);
 	--input: oklch(1 0 0 / 14%);
-	--ring: oklch(0.75 0.13 85);
+	--ring: var(--brand-accent);
 	--sidebar: var(--card);
 	--sidebar-foreground: var(--foreground);
 	--sidebar-primary: var(--primary);

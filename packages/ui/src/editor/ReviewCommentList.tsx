@@ -180,7 +180,9 @@ function Row({
 					<span
 						className={cn(
 							"line-clamp-1 border-s-2 ps-1.5 text-[11px] leading-snug text-muted-foreground group-hover/row:pe-20 group-focus-within/row:pe-20",
-							resolved ? "border-muted-foreground/40" : "border-brand-accent",
+							resolved
+								? "border-muted-foreground/40"
+								: "border-comment-highlight",
 						)}
 					>
 						{thread.anchor}

@@ -333,7 +333,7 @@ function CommandRow({
 					</p>
 				) : null}
 				{conflicts.length > 0 ? (
-					<p className="text-[10px] text-amber-700 dark:text-amber-400">
+					<p className="text-[10px] text-primary">
 						Also assigned to{" "}
 						{conflicts.map((id, index) => (
 							<span key={id}>

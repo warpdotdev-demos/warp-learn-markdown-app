@@ -238,7 +238,7 @@
 		opacity 100ms var(--ease-snappy);
 }
 
-/* Hover: hint the forest green before commit. */
+/* Hover: hint the brand blue before commit. */
 [data-marky-editor] .pm-task-checkbox:hover .pm-task-checkbox-box {
 	border-color: color-mix(in oklab, var(--brand) 70%, var(--border));
 }
@@ -247,7 +247,7 @@
 	transform: scale(0.88);
 }
 
-/* Checked: fill with forest green and pop in the checkmark. */
+/* Checked: fill with brand blue and pop in the checkmark. */
 [data-marky-editor] .pm-task-checkbox > input:checked + .pm-task-checkbox-box {
 	background: var(--brand);
 	border-color: var(--brand);
@@ -340,11 +340,17 @@
 
 [data-marky-editor] .ProseMirror [data-review-type="reviewComment"],
 [data-marky-editor] .ProseMirror [data-review-type="reviewHighlight"] {
-	background: color-mix(in oklab, var(--brand-accent) 24%, transparent);
+	background: var(--comment-highlight);
 	box-shadow: inset 0 -2px
-		color-mix(in oklab, var(--brand-accent) 70%, transparent);
+		color-mix(in oklab, var(--comment-highlight) 70%, transparent);
 	border-radius: 2px;
 	color: inherit;
+}
+
+/* A solid pale fill would wash out light text on dark; keep it a tint. */
+.dark [data-marky-editor] .ProseMirror [data-review-type="reviewComment"],
+.dark [data-marky-editor] .ProseMirror [data-review-type="reviewHighlight"] {
+	background: color-mix(in oklab, var(--comment-highlight) 24%, transparent);
 }
 
 [data-marky-editor] .ProseMirror [data-review-type="reviewInsertion"] {

@@ -226,7 +226,7 @@ export function InboxView({
 			tabIndex={-1}
 			onKeyDown={handleKeyDown}
 			onFocus={handleFocus}
-			className="min-h-0 flex-1 overflow-y-auto px-2 pb-3 [--muted-warm:oklch(from_var(--muted-foreground)_l_calc(c+0.02)_75)]"
+			className="min-h-0 flex-1 overflow-y-auto px-2 pb-3 [--muted-strong:color-mix(in_oklab,var(--muted-foreground)_70%,var(--foreground))]"
 		>
 			{groups.map((group) => (
 				<section key={group.label} aria-label={group.label}>
@@ -319,9 +319,9 @@ const InboxRow = memo(function InboxRow({
 				}}
 				className={cn(
 					// Warm the muted text on yellow so it doesn't read muddy.
-					"my-0.5 flex w-full cursor-pointer flex-col gap-0.5 rounded-md px-2 py-2 text-start [--row-muted:var(--muted-foreground)] hover:[--row-muted:var(--muted-warm)]",
+					"my-0.5 flex w-full cursor-pointer flex-col gap-0.5 rounded-md px-2 py-2 text-start [--row-muted:var(--muted-foreground)] hover:[--row-muted:var(--muted-strong)]",
 					isCurrent
-						? "bg-sidebar-accent text-sidebar-accent-foreground [--row-muted:var(--muted-warm)]"
+						? "bg-sidebar-accent text-sidebar-accent-foreground [--row-muted:var(--muted-strong)]"
 						: "hover:bg-accent",
 				)}
 			>
