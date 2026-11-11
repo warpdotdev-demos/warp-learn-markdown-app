@@ -5,16 +5,16 @@ import type { ProjectRow } from "../types.js";
 const STYLES = `
 :root {
 	color-scheme: light dark;
-	--bg: #fbfbfa; --fg: #1f2421; --card: #ffffff; --sunken: #f2f2ef;
-	--muted: #646660; --line: #e3e3df; --accent: #2f6f55;
-	--err: #b42335; --warn: #8f5300; --ok: #1b7f45; --info: #2e5ea8;
+	--bg: #fbfbfb; --fg: #202223; --card: #ffffff; --sunken: #eceeee;
+	--muted: #646768; --line: #e1e3e4; --accent: #1008ff;
+	--err: #b42335; --warn: #1008ff; --ok: #1b7f45; --info: #2e5ea8;
 	--mono: ui-monospace, "SF Mono", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) {
 	:root {
-		--bg: #1b1b19; --fg: #ecece9; --card: #242422; --sunken: #2c2c29;
-		--muted: #a9a8a3; --line: rgb(255 255 255 / 10%); --accent: #6cc59d;
-		--err: #ff8592; --warn: #ffc46b; --ok: #6ee3a3; --info: #8db4ff;
+		--bg: #1b1c1c; --fg: #ebeded; --card: #242526; --sunken: #2c2d2e;
+		--muted: #a7aaab; --line: rgb(255 255 255 / 10%); --accent: #8a86ff;
+		--err: #ff8592; --warn: #8a86ff; --ok: #6ee3a3; --info: #8db4ff;
 	}
 }
 * { box-sizing: border-box; }
@@ -27,7 +27,7 @@ header.top nav a { color: var(--muted); text-decoration: none; padding: 4px 0; }
 header.top nav a.on { color: var(--fg); border-bottom: 2px solid var(--accent); }
 main { max-width: 1100px; margin: 0 auto; padding: 24px; }
 h1 { font-size: 20px; margin: 0 0 4px; }
-h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 28px 0 10px; }
+h2 { font-size: 15px; font-weight: 600; margin: 28px 0 10px; }
 .muted { color: var(--muted); }
 .mono, code, pre { font-family: var(--mono); font-size: 12.5px; }
 code { background: var(--sunken); padding: 1px 5px; border-radius: 4px; }
@@ -59,6 +59,8 @@ button.primary { background: var(--accent); color: var(--bg); border-color: tran
 button.danger { color: var(--err); }
 input, select { font: inherit; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); }
 form.inline { display: inline; }
+/* Native select arrows ignore padding and sit flush with the border; draw our own. */
+select { appearance: none; padding-right: 30px; background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238a8d8e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center; }
 .frame-lib { opacity: .55; }
 details summary { cursor: pointer; }
 .empty { padding: 40px; text-align: center; color: var(--muted); }
