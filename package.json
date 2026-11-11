@@ -1,0 +1,39 @@
+{
+	"name": "marky",
+	"private": true,
+	"version": "0.0.0",
+	"packageManager": "pnpm@11.9.0",
+	"engines": {
+		"node": ">=22.13 <25"
+	},
+	"description": "Marky, a local-first Markdown desktop app",
+	"license": "MIT",
+	"author": "Warp",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/warpdotdev-demos/warp-learn-markdown-app.git"
+	},
+	"bugs": "https://github.com/warpdotdev-demos/warp-learn-markdown-app/issues",
+	"scripts": {
+		"check": "biome check .",
+		"check:react-compiler": "node scripts/audit-react-compiler.mjs",
+		"check:fix": "biome check . --write",
+		"seed-backlog": "node scripts/seed-backlog.mjs",
+		"test": "pnpm -r --if-present test",
+		"test:e2e": "pnpm build:desktop && pnpm --filter @marky/desktop test:e2e",
+		"typecheck": "pnpm -r --if-present typecheck",
+		"build": "pnpm check && pnpm -r --if-present build && pnpm typecheck",
+		"build:desktop": "pnpm --filter @marky/desktop... --if-present build && pnpm --filter @marky/desktop... --if-present typecheck",
+		"bundle:desktop:mac": "pnpm --filter @marky/desktop... --if-present build && pnpm --filter @marky/desktop bundle:mac",
+		"bundle:desktop:win": "pnpm --filter @marky/desktop... --if-present build && pnpm --filter @marky/desktop bundle:win",
+		"bundle:desktop:win:arm64": "pnpm --filter @marky/desktop... --if-present build && pnpm --filter @marky/desktop bundle:win:arm64",
+		"bundle:desktop:linux": "pnpm --filter @marky/desktop... --if-present build && pnpm --filter @marky/desktop bundle:linux",
+		"bundle:desktop:linux:arm64": "pnpm --filter @marky/desktop... --if-present build && pnpm --filter @marky/desktop bundle:linux:arm64",
+		"postinstall": "pnpm --filter @marky/desktop exec install-electron",
+		"dev:desktop": "pnpm --filter '@marky/desktop^...' --if-present build && pnpm -r --parallel --stream --filter @marky/desktop... --if-present dev",
+		"dev:desktop:debug": "MARKY_DESKTOP_ENABLE_CDP=1 pnpm dev:desktop"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.4"
+	}
+}

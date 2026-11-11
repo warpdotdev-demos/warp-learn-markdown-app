@@ -1,0 +1,67 @@
+:root {
+	--toast-bg: var(--card);
+	--toast-fg: var(--foreground);
+	--toast-border: var(--border);
+	--toast-radius: var(--radius);
+	--toast-shadow: var(--shadow-overlay);
+	--toast-control-radius: 0.375rem;
+	--toast-font-size: 0.75rem;
+	--toast-cancel-bg: var(--secondary);
+	--toast-muted-fg: var(--muted-foreground);
+}
+
+.marky-toast {
+	background: var(--toast-bg) !important;
+	color: var(--toast-fg) !important;
+	border: 1px solid var(--toast-border) !important;
+	border-radius: var(--toast-radius) !important;
+	box-shadow: var(--toast-shadow) !important;
+	font-size: var(--toast-font-size) !important;
+}
+
+.marky-toast-title {
+	color: var(--toast-fg) !important;
+	font-weight: 600;
+}
+
+.marky-toast-description {
+	color: var(--toast-muted-fg) !important;
+}
+
+.marky-toast-action {
+	background: transparent !important;
+	color: var(--toast-muted-fg) !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--toast-control-radius);
+	box-shadow: none !important;
+	/* Sonner pins action buttons to height: 24px, which swallows the
+	   vertical padding; let content and padding set the height. */
+	height: auto !important;
+	padding-inline: 0.7rem;
+	padding-block: 0.35rem;
+	font-weight: 500;
+}
+
+.marky-toast-action kbd {
+	margin-left: 0.45em;
+	padding: 0.05rem 0.3rem;
+	border: 1px solid var(--toast-border);
+	border-radius: calc(var(--toast-control-radius) - 2px);
+	font-family: inherit;
+	font-size: 0.95em;
+}
+
+.marky-toast-action:hover {
+	background: var(--muted) !important;
+	color: var(--toast-fg) !important;
+}
+
+.marky-toast-cancel {
+	border: 1px solid var(--toast-border) !important;
+	background: var(--toast-cancel-bg) !important;
+	color: var(--toast-fg) !important;
+	border-radius: var(--toast-control-radius);
+	box-shadow: none !important;
+	padding-inline: 0.7rem;
+	padding-block: 0.35rem;
+}

@@ -1,0 +1,27 @@
+.marky-embed {
+	margin-block: 1rem;
+}
+
+.marky-embed.ProseMirror-selectednode {
+	outline: 2px solid hsl(var(--ring));
+	outline-offset: 2px;
+}
+
+.marky-iframe-embed {
+	background: var(--card);
+	border: 0;
+	border-radius: 8px;
+	display: block;
+	inline-size: 100%;
+	min-block-size: 80px;
+	overflow: hidden;
+}
+
+.marky-embed-error {
+	border: 1px solid hsl(var(--destructive));
+	border-radius: 8px;
+	color: hsl(var(--destructive));
+	font-size: 0.875rem;
+	padding-block: 0.75rem;
+	padding-inline: 0.75rem;
+}

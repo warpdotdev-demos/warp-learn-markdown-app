@@ -1,0 +1,45 @@
+{
+	"name": "@marky/error-reporter",
+	"version": "0.0.1",
+	"description": "Sentry-shaped error reporting client for the Marky error monitor",
+	"license": "MIT",
+	"author": "Warp",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/warpdotdev-demos/warp-learn-markdown-app.git",
+		"directory": "packages/error-reporter"
+	},
+	"bugs": "https://github.com/warpdotdev-demos/warp-learn-markdown-app/issues",
+	"private": true,
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./node": {
+			"types": "./dist/node.d.ts",
+			"default": "./dist/node.js"
+		},
+		"./renderer": {
+			"types": "./dist/renderer.d.ts",
+			"default": "./dist/renderer.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"typecheck": "tsc -p tsconfig.json --noEmit",
+		"dev": "tsc -p tsconfig.json --watch --preserveWatchOutput",
+		"test": "vitest run"
+	},
+	"devDependencies": {
+		"@types/node": "^25.5.0",
+		"typescript": "~5.8.3",
+		"vitest": "^3.2.4"
+	}
+}

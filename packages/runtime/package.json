@@ -1,0 +1,25 @@
+{
+	"name": "@marky/runtime",
+	"version": "0.0.1",
+	"description": "Runtime injected into Marky HTML Apps and Embeds",
+	"license": "MIT",
+	"author": "Warp",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/warpdotdev-demos/warp-learn-markdown-app.git",
+		"directory": "packages/runtime"
+	},
+	"bugs": "https://github.com/warpdotdev-demos/warp-learn-markdown-app/issues",
+	"type": "module",
+	"exports": {
+		"./html-app-theme.css": "./html-app-theme.css",
+		"./global.js": "./global.js"
+	},
+	"files": [
+		"html-app-theme.css",
+		"global.js"
+	],
+	"publishConfig": {
+		"access": "public"
+	}
+}

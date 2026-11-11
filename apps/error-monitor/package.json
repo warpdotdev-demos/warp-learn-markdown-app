@@ -1,0 +1,30 @@
+{
+	"name": "@marky/error-monitor",
+	"version": "0.0.1",
+	"description": "Local error monitor that groups Marky errors and sends signed alert webhooks",
+	"license": "MIT",
+	"author": "Warp",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "tsx watch src/index.ts",
+		"start": "tsx src/index.ts",
+		"simulate": "pnpm --filter @marky/error-reporter build && tsx scripts/simulate.ts",
+		"webhook:echo": "tsx scripts/webhook-echo.ts",
+		"typecheck": "tsc -p tsconfig.json --noEmit",
+		"test": "vitest run"
+	},
+	"dependencies": {
+		"@hono/node-server": "^1.19.0",
+		"hono": "^4.9.0",
+		"source-map-js": "^1.2.1",
+		"zod": "^4.4.3"
+	},
+	"devDependencies": {
+		"@marky/error-reporter": "workspace:*",
+		"@types/node": "^25.5.0",
+		"tsx": "^4.20.0",
+		"typescript": "~5.8.3",
+		"vitest": "^3.2.4"
+	}
+}

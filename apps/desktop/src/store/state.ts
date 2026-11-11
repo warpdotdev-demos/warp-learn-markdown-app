@@ -1,0 +1,193 @@
+import { setCommandBindings } from "@marky/editor";
+import type { ReviewThread } from "@marky/ui";
+import { store } from "@simplestack/store";
+import type { SpellcheckState } from "../desktopApi/types";
+import type { FileAction } from "../externalFileChange";
+import type { FileKind } from "../lib/filePath";
+import { localStoragePersist } from "../lib/localStoragePersist";
+import {
+	type DesktopState,
+	getInitialState,
+	STORAGE_KEY,
+	serialize,
+} from "./persistence";
+import { type TabId, type TabTarget, withOpenedTab } from "./tabs";
+
+export type SortMode = "alpha" | "recent";
+
+export type FileEntry = {
+	path: string;
+	modified_at: number;
+	kind?: FileKind;
+};
+
+export type FolderEntry = {
+	path: string;
+	modified_at: number;
+};
+
+type ViewerStatus = "idle" | "loading" | "ready" | "error";
+export type ViewMode = "rich" | "source";
+type ExternalChange =
+	| { kind: "none" }
+	| { kind: "conflict"; diskContent: string };
+
+type DocumentState = {
+	currentPath: string | null;
+	content: string;
+	diskContent: string;
+	externalChange: ExternalChange;
+	status: ViewerStatus;
+	error: string | null;
+	viewMode: ViewMode;
+};
+
+const NO_CONFLICT: ExternalChange = { kind: "none" };
+
+export const MAX_RECENT = 10;
+export const LOADING_DELAY_MS = 150;
+export const MAX_HISTORY = 50;
+
+export type HistoryStack = {
+	entries: string[];
+	index: number;
+};
+
+export type HistoryState = {
+	byTab: Record<TabId, HistoryStack>;
+	isNavigating: boolean;
+};
+
+export const emptyDoc = (): DocumentState => ({
+	currentPath: null,
+	content: "",
+	diskContent: "",
+	externalChange: NO_CONFLICT,
+	status: "idle",
+	error: null,
+	viewMode: "rich",
+});
+
+export function cleanFileState(content: string) {
+	return {
+		content,
+		diskContent: content,
+		externalChange: NO_CONFLICT,
+		status: "ready" as const,
+		error: null,
+	};
+}
+
+export function getBaseline(state: DocumentState) {
+	return state.externalChange.kind === "conflict"
+		? state.externalChange.diskContent
+		: state.diskContent;
+}
+
+export function applyFileAction(
+	state: DocumentState,
+	diskContent: string,
+	action: FileAction,
+): DocumentState {
+	switch (action) {
+		case "none":
+			return state;
+		case "match":
+		case "reload":
+			return {
+				...state,
+				...cleanFileState(diskContent),
+			};
+		case "conflict":
+			return {
+				...state,
+				status: "ready",
+				error: null,
+				externalChange: {
+					kind: "conflict",
+					diskContent,
+				},
+			};
+	}
+}
+
+export function isInWorkspace(
+	path: string,
+	workspacePath: string | null,
+): boolean {
+	if (!workspacePath) return false;
+	if (path === workspacePath) return true;
+	const normalizedWorkspace = workspacePath.endsWith("/")
+		? workspacePath
+		: `${workspacePath}/`;
+	return path.startsWith(normalizedWorkspace);
+}
+
+export function withOpenedDoc(
+	state: DesktopState,
+	path: string,
+	content: string,
+	tab?: TabTarget,
+): DesktopState {
+	return {
+		...state,
+		tabs: withOpenedTab(state.tabs, path, tab),
+		document: {
+			...state.document,
+			currentPath: path,
+			...cleanFileState(content),
+			viewMode: "rich",
+		},
+	};
+}
+
+// ── Stores ──────────────────────────────────────────────────────────
+
+const initialState = getInitialState();
+setCommandBindings(initialState.settings.shortcutBindings);
+
+export const appStore = store<DesktopState>(initialState, {
+	middleware: [localStoragePersist(STORAGE_KEY, serialize)],
+});
+
+export const historyStore = store<HistoryState>({
+	byTab: {},
+	isNavigating: false,
+});
+
+// Derived from the open document, so it stays out of the persisted app store
+export const reviewThreadsStore = store<ReviewThread[]>([]);
+
+// Keep title previews out of appStore so they do not survive a relaunch.
+export const titleGenerationPreviewStore = store<{
+	path: string;
+	previewPath: string;
+} | null>(null);
+
+export const spellcheckStore = store<SpellcheckState | null>(null);
+
+export const workspaceStore = appStore.select("workspace");
+export const viewerStore = appStore.select("document");
+export const uiStore = appStore.select("ui");
+
+export const workspacePathStore = workspaceStore.select("workspacePath");
+export const recentWorkspacesStore = workspaceStore.select("recentWorkspaces");
+export const currentPathStore = viewerStore.select("currentPath");
+export const sidebarOpenStore = uiStore.select("sidebarOpen");
+export const sidebarViewStore = uiStore.select("sidebarView");
+export const switcherOpenStore = uiStore.select("isSwitcherOpen");
+export const terminalOpenStore = uiStore.select("isTerminalOpen");
+export const terminalPositionStore = uiStore.select("terminalPosition");
+export const pendingTerminalCommandStore = uiStore.select(
+	"pendingTerminalCommand",
+);
+export const chatCommandStore = appStore
+	.select("settings")
+	.select("chatCommand");
+export const codeFileOpenModeStore = appStore
+	.select("settings")
+	.select("codeFileOpenMode");
+export const shortcutBindingsStore = appStore
+	.select("settings")
+	.select("shortcutBindings");
+export const themePreferenceStore = appStore.select("settings").select("theme");

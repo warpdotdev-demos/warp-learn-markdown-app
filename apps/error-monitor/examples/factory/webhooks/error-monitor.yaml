@@ -1,0 +1,4 @@
+authMode: signature
+signatureScheme: standard_webhooks
+secretName: ERROR_MONITOR_WEBHOOK_SECRET
+deliveryIdHeader: webhook-id

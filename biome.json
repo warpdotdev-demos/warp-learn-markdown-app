@@ -1,0 +1,51 @@
+{
+	"$schema": "https://biomejs.dev/schemas/latest/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"ignoreUnknown": true,
+		"includes": [
+			"**",
+			"!**/dist",
+			"!**/out",
+			"!**/build",
+			"!**/coverage",
+			"!**/.claude/skills",
+			"!apps/desktop/fixtures/playground",
+			"!**/*.tsbuildinfo"
+		]
+	},
+	"formatter": {
+		"enabled": true
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"useExhaustiveDependencies": "error",
+				"useHookAtTopLevel": "error"
+			}
+		}
+	},
+	"overrides": [
+		{
+			"includes": ["**/components/toast.css"],
+			"linter": {
+				"rules": {
+					"complexity": {
+						"noImportantStyles": "off"
+					}
+				}
+			}
+		}
+	]
+}

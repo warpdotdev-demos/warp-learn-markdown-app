@@ -1,0 +1,8 @@
+schemaVersion: v1alpha1
+name: marky-error-triage
+description: Turns Marky error monitor alerts into fixes.
+repositories:
+  - owner: warpdotdev-demos
+    name: warp-learn-markdown-app
+agentDefaults:
+  model: auto

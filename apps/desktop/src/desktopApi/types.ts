@@ -1,0 +1,237 @@
+import type { CommandBindings } from "@marky/editor";
+import type { FileKind } from "../lib/filePath";
+import type { NotePreview } from "../lib/titleGeneration";
+import type { ThemePreference } from "../theme";
+
+export type FileEntry = {
+	path: string;
+	modified_at: number;
+	kind: FileKind;
+};
+
+export type FolderEntry = {
+	path: string;
+	modified_at: number;
+};
+
+export type DirectoryListing = {
+	files: FileEntry[];
+	folders: FolderEntry[];
+};
+
+export type WorkspaceWatchEvent =
+	| { kind: "paths"; paths: string[] }
+	| { kind: "refresh" };
+
+export type WorkspaceDelta =
+	| { kind: "file"; entry: FileEntry }
+	| { kind: "subtree"; path: string; listing: DirectoryListing }
+	| { kind: "remove"; path: string }
+	| { kind: "refresh" };
+
+export type HtmlAppFileEntry = {
+	name: string;
+	path: string;
+	modified_at: number;
+	size: number;
+};
+
+export type SearchContentMatch = {
+	/** 1-indexed line number within the file. */
+	line: number;
+	/** Trimmed line, windowed around the match, with ellipses when clipped. */
+	excerpt: string;
+	matchStart: number;
+	matchEnd: number;
+};
+
+export type SearchFileResult = {
+	path: string;
+	matches: SearchContentMatch[];
+};
+
+export type SearchFileContentsInput = {
+	/** Monotonic per-renderer id. Main abandons a search once it is superseded. */
+	requestId: number;
+	/** Candidate paths, taken from the sidebar snapshot. Main never re-walks. */
+	paths: string[];
+	query: string;
+};
+
+export type SearchFileContentsOutput = {
+	requestId: number;
+	results: SearchFileResult[];
+	/** True when the file cap was hit before every candidate was scanned. */
+	truncated: boolean;
+};
+
+export type PersistPastedImageInput = {
+	filePath: string;
+	bytes: number[];
+	mimeType: string | null;
+};
+
+export type PersistPastedImageOutput = {
+	relativeMarkdownPath: string;
+	deduped: boolean;
+};
+
+export type OpenPathFromLinkResult =
+	| { kind: "file"; path: string }
+	| { kind: "opened" };
+
+export type AgentClient = "codex" | "claude";
+
+export type OpenAgentClientInput = {
+	client: AgentClient;
+	prompt: string;
+	workspacePath: string;
+};
+
+export type WatchOptions = {
+	recursive: boolean;
+};
+
+export type Unsubscribe = () => void;
+
+export type ZoomDirection = "in" | "out" | "reset";
+
+export type MenuState = {
+	hasWorkspace: boolean;
+	hasSourceViewOpen: boolean;
+	isSourceMode: boolean;
+	canGoBack: boolean;
+	canGoForward: boolean;
+	tabCount: number;
+	hasClosedTabs: boolean;
+};
+
+export type DesktopPlatform = NodeJS.Platform;
+
+export type TerminalStartOptions = {
+	notePath?: string;
+	initialCommand?: string;
+};
+
+export type WorkspaceConfig = {
+	version: 1;
+	pinnedNotes: string[];
+};
+
+export type SpellcheckState = {
+	enabled: boolean;
+	languages: string[];
+	availableLanguages: string[];
+	systemLanguage: string;
+};
+
+export type DesktopApi = {
+	platform: DesktopPlatform;
+	homeDir: string;
+	listDirectory(path: string): Promise<DirectoryListing>;
+	listHtmlAppFiles(
+		workspacePath: string,
+		glob: string,
+	): Promise<HtmlAppFileEntry[]>;
+	readWorkspaceConfig(workspacePath: string): Promise<WorkspaceConfig>;
+	writeWorkspaceConfig(
+		workspacePath: string,
+		config: WorkspaceConfig,
+	): Promise<void>;
+	readFileText(path: string): Promise<string>;
+	/** Titles and first lines for many notes, reading only the start of each. */
+	readNotePreviews(
+		paths: string[],
+	): Promise<Record<string, NotePreview | null>>;
+	searchFileContents(
+		input: SearchFileContentsInput,
+	): Promise<SearchFileContentsOutput>;
+	writeFileText(path: string, content: string): Promise<void>;
+	createFolder(path: string): Promise<void>;
+	renameFile(fromPath: string, toPath: string): Promise<void>;
+	pathExists(path: string): Promise<boolean>;
+	persistPastedImage(
+		input: PersistPastedImageInput,
+	): Promise<PersistPastedImageOutput>;
+	deleteFile(path: string, options?: { recursive?: boolean }): Promise<void>;
+	stageDelete(workspacePath: string, paths: string[]): Promise<string>;
+	undoText(): Promise<void>;
+	restoreDelete(token: string): Promise<void>;
+	finalizeDelete(token: string): Promise<void>;
+	setDeleteUndoAvailable(available: boolean): Promise<void>;
+	readBinaryFile(path: string): Promise<number[]>;
+	writeBinaryFile(path: string, bytes: number[]): Promise<void>;
+	openFilePicker(options: { defaultPath?: string }): Promise<string | null>;
+	openFolderPicker(): Promise<string | null>;
+	createFolderPicker(): Promise<string | null>;
+	saveMarkdownFilePicker(options: {
+		defaultPath?: string;
+	}): Promise<string | null>;
+	startWorkspaceWatcher(path: string): Promise<number | null>;
+	stopWorkspaceWatcher(generation: number): Promise<void>;
+	sidebarDeltaForPath(
+		workspacePath: string,
+		changedPath: string,
+	): Promise<WorkspaceDelta | null>;
+	watchPath(
+		path: string,
+		options: WatchOptions,
+		callback: (paths: string[]) => void,
+	): Promise<Unsubscribe>;
+	openExternalUrl(url: string): Promise<void>;
+	openAgentClient(input: OpenAgentClientInput): Promise<void>;
+	openPathFromLink(path: string): Promise<OpenPathFromLinkResult>;
+	openPathInDefaultApp(path: string): Promise<void>;
+	revealFile(path: string): Promise<void>;
+	resolvePath(path: string): Promise<string>;
+	realPath(path: string): Promise<string>;
+	toAssetUrl(path: string): string;
+	getLaunchFilePath(): Promise<string | null>;
+	getLaunchWorkspacePath(): Promise<string | null>;
+	setThemeSource(source: ThemePreference): Promise<void>;
+	getSpellcheckState(): Promise<SpellcheckState>;
+	setSpellcheckEnabled(enabled: boolean): Promise<void>;
+	setSpellcheckLanguages(languages: string[]): Promise<void>;
+	setMenuState(state: MenuState): Promise<void>;
+	setShortcutBindings(bindings: CommandBindings): Promise<void>;
+	getFullScreen(): Promise<boolean>;
+	/** Sends title drag moves over IPC to the main process, which owns BrowserWindow. */
+	moveWindow(x: number, y: number): Promise<void>;
+	zoomWindow(direction: ZoomDirection): Promise<void>;
+	onOpenFile(callback: (path: string) => void): Unsubscribe;
+	onMenuCreateMarkdownFile(callback: () => void): Unsubscribe;
+	onMenuCreateHtmlFile(callback: () => void): Unsubscribe;
+	onMenuOpenFile(callback: () => void): Unsubscribe;
+	onMenuOpenFolder(callback: () => void): Unsubscribe;
+	onMenuOpenSettings(callback: () => void): Unsubscribe;
+	onMenuCopyAsMarkdown(callback: () => void): Unsubscribe;
+	onMenuShowWorkspaceSwitcher(callback: () => void): Unsubscribe;
+	onMenuGoToFile(callback: () => void): Unsubscribe;
+	onMenuNewTab(callback: () => void): Unsubscribe;
+	onMenuSyncWorkspace(callback: () => void): Unsubscribe;
+	onWorkspaceChanged(
+		callback: (event: WorkspaceWatchEvent) => void,
+	): Unsubscribe;
+	onMenuToggleTerminal(callback: () => void): Unsubscribe;
+	onMenuGoBack(callback: () => void): Unsubscribe;
+	onMenuGoForward(callback: () => void): Unsubscribe;
+	onMenuCloseTab(callback: () => void): Unsubscribe;
+	onMenuReopenClosedTab(callback: () => void): Unsubscribe;
+	onMenuNextTab(callback: () => void): Unsubscribe;
+	onMenuPreviousTab(callback: () => void): Unsubscribe;
+	onMenuToggleSourceMode(callback: () => void): Unsubscribe;
+	onUndoDelete(callback: () => void): Unsubscribe;
+	onWindowFocus(callback: () => void): Unsubscribe;
+	onFullScreenChange(callback: (isFullScreen: boolean) => void): Unsubscribe;
+
+	// Terminal
+	terminalStart(cwd: string, options?: TerminalStartOptions): Promise<string>;
+	terminalWrite(sessionId: string, data: string): Promise<void>;
+	terminalResize(sessionId: string, cols: number, rows: number): Promise<void>;
+	terminalStop(sessionId: string): Promise<void>;
+	onTerminalData(
+		sessionId: string,
+		callback: (data: string) => void,
+	): Unsubscribe;
+	onTerminalExit(sessionId: string, callback: () => void): Unsubscribe;
+};

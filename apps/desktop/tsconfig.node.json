@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"skipLibCheck": true,
+		"target": "ES2020",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"allowSyntheticDefaultImports": true
+	},
+	"include": [
+		"vite.config.ts",
+		"electron.vite.config.ts",
+		"playwright.config.ts",
+		"e2e",
+		"electron",
+		"src/desktopApi/types.ts",
+		"src/lib/concurrency.ts"
+	]
+}
