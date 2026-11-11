@@ -1,5 +1,5 @@
 import type { AlertWithDeliveries } from "../store.js";
-import type { EndpointRow, ProjectRow, RuleConfig } from "../types.js";
+import type { EndpointRow, ProjectRow } from "../types.js";
 import { AlertsTable } from "./alerts.js";
 import { Badge, Layout } from "./layout.js";
 
@@ -7,22 +7,13 @@ export function WebhooksPage(props: {
 	project: ProjectRow;
 	endpoints: EndpointRow[];
 	alerts: AlertWithDeliveries[];
-	alertsToday: number;
-	rules: RuleConfig;
 	dsn: string;
 	now: number;
 }) {
-	const { project, endpoints, rules } = props;
-	const windowMinutes = Math.round(rules.thresholdWindowMs / 60_000);
+	const { project, endpoints } = props;
 	return (
 		<Layout title="Webhooks" project={project} active="webhooks">
 			<h1>Webhooks &amp; alerts</h1>
-			<p class="muted">
-				Alerts fire for <code>error</code> and <code>fatal</code> events only: a
-				new issue, a regression in a newer release, or {rules.thresholdCount}+
-				events in {windowMinutes} minutes. {props.alertsToday} of{" "}
-				{rules.dailyAlertCap} alerts used in the last 24h.
-			</p>
 
 			<h2>Endpoints</h2>
 			<div class="card">
@@ -120,16 +111,6 @@ export function WebhooksPage(props: {
 					Add endpoint
 				</button>
 			</form>
-			<p class="muted">
-				Token mode sends <code>{"Authorization: Bearer <secret>"}</code>, for a
-				Warp factory webhook with Bearer token auth. Paste the factory's token
-				as the secret. Signature mode signs with <code>webhook-id</code>,{" "}
-				<code>webhook-timestamp</code>, and <code>webhook-signature</code>, so a
-				Warp factory webhook source with{" "}
-				<code>signatureScheme: standard_webhooks</code> can verify it. Store the
-				same secret as the managed secret named by the source's{" "}
-				<code>secretName</code>.
-			</p>
 
 			<h2>Recent alerts</h2>
 			<AlertsTable alerts={props.alerts} now={props.now} showIssue />

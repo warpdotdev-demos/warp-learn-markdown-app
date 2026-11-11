@@ -8,7 +8,6 @@ import type { Db } from "./db.js";
 import { ingestBodySchema } from "./eventSchema.js";
 import { ingestEvent, sendTestAlert } from "./ingest.js";
 import {
-	alertsInLastDay,
 	createEndpoint,
 	deleteEndpoint,
 	deleteIssue,
@@ -199,8 +198,6 @@ export function createApp(deps: AppDeps) {
 				project={project}
 				endpoints={listEndpoints(db, project.id)}
 				alerts={recentAlerts(db, project.id)}
-				alertsToday={alertsInLastDay(db, project.id, current)}
-				rules={config.rules}
 				dsn={dsnFor(project, config.publicUrl)}
 				now={current}
 			/>,
