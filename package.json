@@ -31,7 +31,8 @@
 		"bundle:desktop:linux:arm64": "pnpm --filter @marky/desktop... --if-present build && pnpm --filter @marky/desktop bundle:linux:arm64",
 		"postinstall": "pnpm --filter @marky/desktop exec install-electron",
 		"dev:desktop": "pnpm --filter '@marky/desktop^...' --if-present build && pnpm -r --parallel --stream --filter @marky/desktop... --if-present dev",
-		"dev:desktop:debug": "MARKY_DESKTOP_ENABLE_CDP=1 pnpm dev:desktop"
+		"dev:desktop:debug": "MARKY_DESKTOP_ENABLE_CDP=1 pnpm dev:desktop",
+		"dev:error-monitor": "pnpm --filter @marky/error-monitor dev"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.4.4"

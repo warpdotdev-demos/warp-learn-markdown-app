@@ -18,7 +18,7 @@ alerts from a monitor on your laptop without a tunnel.
 Requires Node 22.13+ (the repo's `engines` range).
 
 ```sh
-pnpm --filter @marky/error-monitor dev            # dashboard on http://localhost:4747, prints the DSN
+pnpm dev:error-monitor                            # dashboard on http://localhost:4747, prints the DSN
 pnpm --filter @marky/error-monitor webhook:echo   # local receiver that verifies signatures
 pnpm --filter @marky/error-monitor simulate       # send one of each sample error
 ```
