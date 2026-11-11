@@ -45,6 +45,7 @@ pre.wrap { white-space: pre-wrap; overflow-wrap: anywhere; overflow-y: auto; }
 table { width: 100%; border-collapse: collapse; }
 th { text-align: left; font-weight: 500; color: var(--muted); padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: 12px; }
 td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.middle td { vertical-align: middle; }
 tr:last-child td { border-bottom: none; }
 .title { font-weight: 600; text-decoration: none; word-break: break-word; }
 .badge { display: inline-block; font: 600 11px var(--mono); padding: 1px 7px; border-radius: 4px; white-space: nowrap; }
@@ -58,9 +59,17 @@ button, .button { font: inherit; padding: 5px 12px; border-radius: 6px; border: 
 button.primary { background: var(--accent); color: var(--bg); border-color: transparent; }
 button.danger { color: var(--err); }
 input, select { font: inherit; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); }
-form.inline { display: inline; }
 /* Native select arrows ignore padding and sit flush with the border; draw our own. */
 select { appearance: none; padding-right: 30px; background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238a8d8e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center; }
+form.inline { display: inline; }
+/* All icons share one grid cell so swapping them never changes the button's size. */
+button.copy { display: inline-grid; place-items: center; padding: 4px; border: none; background: none; color: var(--muted); }
+button.copy:hover { color: var(--fg); background: var(--sunken); }
+button.copy.ok { color: var(--ok); }
+button.copy.fail { color: var(--err); }
+button.copy > svg { grid-area: 1 / 1; visibility: hidden; }
+button.copy .idle, button.copy.ok .ok, button.copy.fail .fail { visibility: visible; }
+button.copy.ok .idle, button.copy.fail .idle { visibility: hidden; }
 .frame-lib { opacity: .55; }
 details summary { cursor: pointer; }
 .empty { padding: 40px; text-align: center; color: var(--muted); }
@@ -78,9 +87,24 @@ details.menu > summary:hover, details.menu[open] > summary { background: var(--s
 .menu-items button:hover { background: var(--sunken); }
 `;
 
-// Confirms forms marked with data-confirm and closes overflow menus on an
-// outside click or Escape. Native <details> handles opening.
+// Confirms forms marked with data-confirm, copies data-copy values to the
+// clipboard, and closes overflow menus on an outside click or Escape. Native
+// <details> handles opening.
 const SCRIPT = `
+document.addEventListener("click", async (event) => {
+	const button = event.target.closest && event.target.closest("button[data-copy]");
+	if (!button) return;
+	let state = "ok";
+	try {
+		await navigator.clipboard.writeText(button.dataset.copy);
+	} catch {
+		state = "fail";
+	}
+	button.classList.remove("ok", "fail");
+	button.classList.add(state);
+	clearTimeout(button.copyTimer);
+	button.copyTimer = setTimeout(() => button.classList.remove(state), 1500);
+});
 document.addEventListener("submit", (event) => {
 	const message = event.target.dataset && event.target.dataset.confirm;
 	if (message && !confirm(message)) event.preventDefault();

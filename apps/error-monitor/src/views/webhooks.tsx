@@ -24,7 +24,7 @@ export function WebhooksPage(props: {
 						local receiver.
 					</div>
 				) : (
-					<table>
+					<table class="middle">
 						<thead>
 							<tr>
 								<th>URL</th>
@@ -48,12 +48,37 @@ export function WebhooksPage(props: {
 									<td class="mono">{authLabel(endpoint)}</td>
 									<td>
 										{endpoint.secret ? (
-											<details>
-												<summary class="muted">reveal</summary>
-												<code style="word-break:break-all">
-													{endpoint.secret}
-												</code>
-											</details>
+											<div class="row" style="gap:8px;flex-wrap:nowrap">
+												<span class="mono muted" aria-hidden="true">
+													••••••••
+												</span>
+												<button
+													type="button"
+													class="copy"
+													data-copy={endpoint.secret}
+													aria-label="Copy secret"
+													title="Copy secret"
+												>
+													<Icon class="idle">
+														<rect
+															width="14"
+															height="14"
+															x="8"
+															y="8"
+															rx="2"
+															ry="2"
+														/>
+														<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+													</Icon>
+													<Icon class="ok">
+														<path d="M20 6 9 17l-5-5" />
+													</Icon>
+													<Icon class="fail">
+														<path d="M18 6 6 18" />
+														<path d="m6 6 12 12" />
+													</Icon>
+												</button>
+											</div>
 										) : (
 											<span class="muted">—</span>
 										)}
@@ -122,6 +147,27 @@ function authLabel(endpoint: EndpointRow) {
 	if (endpoint.auth_mode === "signature") return "standard_webhooks";
 	if (endpoint.auth_mode === "token") return "bearer token";
 	return "none";
+}
+
+/** Lucide icon frame (https://lucide.dev); children are the icon's paths. */
+function Icon(props: { class: string; children: unknown }) {
+	return (
+		<svg
+			class={props.class}
+			xmlns="http://www.w3.org/2000/svg"
+			width="14"
+			height="14"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+		>
+			{props.children}
+		</svg>
+	);
 }
 
 function PostButton(props: {
