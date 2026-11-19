@@ -1,6 +1,6 @@
 # Marky - as seen on warp.dev/learn
 
-This is the sample project used by the Warp Factories introductory course. Learn more at [warp.dev/learn](warp.dev/learn)
+This is the sample project used by the Warp Factories introductory course. Learn more at [warp.dev/learn](https://warp.dev/learn)
 
 ## What is Marky?
 
